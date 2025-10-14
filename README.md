@@ -14,7 +14,7 @@ book-buddy-firebase/
 - Firebase project (enable **Authentication** and **Firestore**)
 
 ---
-## 🔧 Backend setup
+## Backend setup
 ```bash
 cd backend
 cp .env.example .env
@@ -38,7 +38,7 @@ npm run dev     # -> http://localhost:4000
 Auth is enforced by verifying **Firebase ID tokens** from the `Authorization: Bearer <idToken>` header.
 
 ---
-## 🖥 Frontend setup
+## Frontend setup
 ```bash
 cd ../frontend
 npm i
@@ -63,7 +63,7 @@ VITE_FIREBASE_APP_ID=1:XXXX:web:YYYY
 - Backend verifies token → attaches `req.user = { id, email, name }`.
 
 ---
-## 🔒 Firestore Security Rules (optional if all writes go via backend)
+## Firestore Security Rules (optional if all writes go via backend)
 If you also access Firestore directly from the client, add rules like:
 ```
 rules_version = '2';
