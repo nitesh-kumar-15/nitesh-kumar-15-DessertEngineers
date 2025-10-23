@@ -11,13 +11,13 @@ function initAdmin() {
     if (inline) {
       const cred = JSON.parse(inline);
       admin.initializeApp({ credential: admin.credential.cert(cred) });
-      console.log('✅ Firebase Admin initialized from inline JSON');
+      console.log('Firebase Admin initialized from inline JSON');
       return;
     }
     if (pathEnv) {
       const abs = path.isAbsolute(pathEnv) ? pathEnv : path.resolve(process.cwd(), pathEnv);
       if (!fs.existsSync(abs)) {
-        console.error('❌ Credentials file not found at:', abs);
+        console.error('Credentials file not found at:', abs);
       } else {
         const cred = JSON.parse(fs.readFileSync(abs, 'utf-8'));
         admin.initializeApp({ credential: admin.credential.cert(cred) });
