@@ -4,3 +4,5 @@ firebase-key.json
 
 # ignore build artifacts
 node_modules/
+
+serviceAccount.json
