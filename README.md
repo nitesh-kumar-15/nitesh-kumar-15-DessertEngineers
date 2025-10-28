@@ -2,6 +2,14 @@
 
 A book exchange app with **Firebase Auth** (email/password) and **Cloud Firestore**, plus a lightweight **Express** API for business rules.
 
+## Tech Stack
+- Frontend: React (Vite), Firebase Auth
+- Backend: Node.js, Express
+- Database: Firestore (Cloud Firestore)
+- Authentication: Firebase Auth (email/password)
+
+
+
 ## Features
 - User registration/login via Firebase Auth
 - Add, edit, delete, and view books
@@ -108,6 +116,19 @@ service cloud.firestore {
 3. Search or browse books.
 4. Send a request to borrow a book.
 5. Accept or reject incoming requests in your inbox.
+
+ ## Environment Variables Table
+| Variable | Description |
+|----------|-------------|
+| `VITE_API_URL` | Backend API URL |
+| `VITE_FIREBASE_API_KEY` | Firebase Web API Key |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase Auth Domain |
+| `VITE_FIREBASE_PROJECT_ID` | Firebase Project ID |
+| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase Storage Bucket |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase Messaging Sender ID |
+| `VITE_FIREBASE_APP_ID` | Firebase App ID |
+| `FIREBASE_SERVICE_ACCOUNT_JSON` | Backend Service Account JSON |
+
 
 ## License
 This project is licensed under the MIT License.
