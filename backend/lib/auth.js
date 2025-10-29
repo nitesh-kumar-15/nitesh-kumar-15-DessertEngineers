@@ -6,7 +6,7 @@ export async function authRequired(req, res, next) {
     const token = hdr.startsWith('Bearer ') ? hdr.slice(7) : null;
     if (!token) return res.status(401).json({ error: 'Missing token' });
     const decoded = await adminApp.auth().verifyIdToken(token);
-    req.user = { id: decoded.uid, email: decoded.email || '', name: decoded.name || '' };
+    req.user = { uid: decoded.uid, id: decoded.uid, email: decoded.email || '', name: decoded.name || '' };
     next();
   } catch (e) {
     console.error('Auth error', e);
