@@ -2,6 +2,25 @@
 
 A book exchange app with **Firebase Auth** (email/password) and **Cloud Firestore**, plus a lightweight **Express** API for business rules.
 
+## Tech Stack
+- Frontend: React (Vite), Firebase Auth
+- Backend: Node.js, Express
+- Database: Firestore (Cloud Firestore)
+- Authentication: Firebase Auth (email/password)
+
+
+
+## Features
+- User registration/login via Firebase Auth
+- Add, edit, delete, and view books
+- Search books by title, author, or tags
+- Request books and manage incoming/outgoing requests
+- Real-time updates using Firestore
+- Owner-only permissions for updates and deletes
+
+
+
+
 ## Monorepo
 ```
 book-buddy-firebase/
@@ -90,3 +109,26 @@ service cloud.firestore {
 - Keep API URL in `VITE_API_URL` (Vite env). Backend runs on 4000 by default.
 - Replace search with Firestore queries/indexes later if dataset grows.
 - For production, store the Service Account securely (not in repo).
+
+## Quick Start
+1. Register a new account on the frontend.
+2. Add a book via the "Add Book" form.
+3. Search or browse books.
+4. Send a request to borrow a book.
+5. Accept or reject incoming requests in your inbox.
+
+ ## Environment Variables Table
+| Variable | Description |
+|----------|-------------|
+| `VITE_API_URL` | Backend API URL |
+| `VITE_FIREBASE_API_KEY` | Firebase Web API Key |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase Auth Domain |
+| `VITE_FIREBASE_PROJECT_ID` | Firebase Project ID |
+| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase Storage Bucket |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase Messaging Sender ID |
+| `VITE_FIREBASE_APP_ID` | Firebase App ID |
+| `FIREBASE_SERVICE_ACCOUNT_JSON` | Backend Service Account JSON |
+
+
+## License
+This project is licensed under the MIT License.
