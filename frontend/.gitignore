@@ -1,10 +1,9 @@
 # ignore environment and keys
 .env
-firebase-key.json
-serviceAccount.json
+.env.local
+.env*.local
 
 # ignore build artifacts
 node_modules/
 dist/
 .DS_Store
-serviceAccount.json
