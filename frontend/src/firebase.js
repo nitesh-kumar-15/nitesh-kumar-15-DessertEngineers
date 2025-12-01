@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
+import { getFirestore, collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 
 // Use Vite env vars (create frontend/.env and set VITE_FIREBASE_* values)
 const firebaseConfig = {
