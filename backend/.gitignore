@@ -7,3 +7,9 @@ node_modules/
 dist/
 .DS_Store
 serviceAccount.json
+
+.env
+.env.*
+serviceAccount.json
+*.pem
+*.key
