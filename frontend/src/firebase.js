@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 
 // Use Vite env vars (create frontend/.env and set VITE_FIREBASE_* values)
 const firebaseConfig = {
@@ -13,4 +14,22 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const db = getFirestore(app);
 export function onAuth(cb) { return onAuthStateChanged(auth, cb); }
+
+// Helper to listen to messages in real-time
+export function listenToMessages(requestId, callback) {
+  const messagesRef = collection(db, 'requests', requestId, 'messages');
+  const q = query(messagesRef, orderBy('createdAt', 'asc'));
+  
+  return onSnapshot(q, (snapshot) => {
+    const messages = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    callback(messages);
+  }, (error) => {
+    console.error('Error listening to messages:', error);
+    callback([]);
+  });
+}

@@ -82,27 +82,23 @@ VITE_FIREBASE_APP_ID=1:XXXX:web:YYYY
 - Backend verifies token → attaches `req.user = { id, email, name }`.
 
 ---
-## Firestore Security Rules (optional if all writes go via backend)
-If you also access Firestore directly from the client, add rules like:
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{db}/documents {
-    function signedIn() { return request.auth != null; }
+## Firestore Security Rules
+**Required for real-time chat functionality!** 
 
-    match /books/{id} {
-      allow read: if true;
-      allow create: if signedIn();
-      allow update, delete: if signedIn() && resource.data.ownerId == request.auth.uid;
-    }
+The project includes `firestore.rules` with complete security rules. Deploy them to Firebase:
 
-    match /requests/{id} {
-      allow read, create: if signedIn();
-      allow update: if signedIn() && resource.data.ownerId == request.auth.uid;
-    }
-  }
-}
+```bash
+firebase deploy --only firestore:rules
 ```
+
+Or manually copy the rules from `firestore.rules` to your Firebase Console → Firestore Database → Rules.
+
+The rules include:
+- Books: Public read, authenticated create, owner-only update/delete
+- Requests: Authenticated read/create, owner-only update
+- Messages: Only request participants (owner or requester) can read/write messages
+
+**Note:** Real-time chat requires these rules to be deployed. Without them, the frontend won't be able to listen to messages.
 
 ---
 ## Notes

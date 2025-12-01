@@ -33,5 +33,7 @@ export const ReqAPI = {
   create(r) { return api('/api/requests', { method:'POST', authRequired:true, body:r }); },
   incoming() { return api('/api/requests/incoming', { authRequired:true }); },
   mine() { return api('/api/requests/me', { authRequired:true }); },
-  update(id, status) { return api('/api/requests/'+id, { method:'PUT', authRequired:true, body:{ status } }); }
+  update(id, status) { return api('/api/requests/'+id, { method:'PUT', authRequired:true, body:{ status } }); },
+  getMessages(requestId) { return api('/api/requests/'+requestId+'/messages', { authRequired:true }); },
+  sendMessage(requestId, text) { return api('/api/requests/'+requestId+'/messages', { method:'POST', authRequired:true, body:{ text } }); }
 };

@@ -30,7 +30,7 @@ export default function BookDetail({ book, go, user }) {
         <div className="bookdetail-header-title">
           <h1>Book Buddy</h1>
           <div className="book-buddy-logo">
-            <img src="/logo.png" alt="Book Buddy Logo" style={{width: '60px', height: '60px', objectFit: 'contain'}} />
+            <img src="/logo.svg" alt="Book Buddy Logo" style={{width: '60px', height: '60px', objectFit: 'contain'}} />
           </div>
         </div>
       </div>

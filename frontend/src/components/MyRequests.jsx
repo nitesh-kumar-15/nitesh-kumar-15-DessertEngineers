@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ReqAPI } from '../api'
+import { listenToMessages } from '../firebase'
 
 export default function MyRequests({ user, go }) {
   const [incoming, setIncoming] = useState([])
@@ -8,6 +9,9 @@ export default function MyRequests({ user, go }) {
   const [chatMessage, setChatMessage] = useState('')
   const [activeTab, setActiveTab] = useState('incoming')
   const [selectedConversation, setSelectedConversation] = useState(null)
+  const [messages, setMessages] = useState([])
+  const [loadingMessages, setLoadingMessages] = useState(false)
+  const [sendingMessage, setSendingMessage] = useState(false)
   const [q, setQ] = useState('')
   
   async function load() {
@@ -21,12 +25,56 @@ export default function MyRequests({ user, go }) {
     } catch (e) { setErr(e.message) }
   }
   
+  async function loadMessages(requestId) {
+    if (!requestId) return
+    setLoadingMessages(true)
+    try {
+      const msgs = await ReqAPI.getMessages(requestId)
+      setMessages(msgs)
+    } catch (e) {
+      setErr(e.message)
+      setMessages([])
+    } finally {
+      setLoadingMessages(false)
+    }
+  }
+  
   async function update(id, status) {
     await ReqAPI.update(id, status)
     await load()
   }
   
   useEffect(()=>{ load() }, [])
+
+  // Set up real-time listener for messages when conversation changes
+  useEffect(() => {
+    if (!selectedConversation?.id) {
+      setMessages([])
+      return
+    }
+
+    // Load initial messages first
+    loadMessages(selectedConversation.id)
+
+    // Set up real-time listener
+    const unsubscribe = listenToMessages(selectedConversation.id, (realTimeMessages) => {
+      setMessages(realTimeMessages)
+      setLoadingMessages(false)
+    })
+
+    // Cleanup listener when conversation changes
+    return () => {
+      unsubscribe()
+    }
+  }, [selectedConversation?.id])
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    const messagesArea = document.querySelector('.chat-messages-area')
+    if (messagesArea) {
+      messagesArea.scrollTop = messagesArea.scrollHeight
+    }
+  }, [messages])
 
   const handleSearch = (e) => {
     if (e.key === 'Enter' || e.type === 'click') {
@@ -40,10 +88,23 @@ export default function MyRequests({ user, go }) {
     }
   }
 
-  const handleSendMessage = () => {
-    if (chatMessage.trim()) {
-      console.log('Sending message:', chatMessage)
-      setChatMessage('')
+  const handleSendMessage = async () => {
+    if (!chatMessage.trim() || !selectedConversation || sendingMessage) return
+    
+    const messageText = chatMessage.trim()
+    setChatMessage('')
+    setSendingMessage(true)
+    
+    try {
+      await ReqAPI.sendMessage(selectedConversation.id, messageText)
+      // Real-time listener will automatically update the messages
+      // No need to manually reload
+    } catch (e) {
+      setErr(e.message)
+      // Restore the message if sending failed
+      setChatMessage(messageText)
+    } finally {
+      setSendingMessage(false)
     }
   }
 
@@ -117,7 +178,7 @@ export default function MyRequests({ user, go }) {
           <div className="home-header-title">
             <h1>Book Buddy</h1>
             <div className="book-buddy-logo">
-              <img src="/logo.png" alt="Book Buddy Logo" style={{width: '60px', height: '60px', objectFit: 'contain'}} />
+              <img src="/logo.svg" alt="Book Buddy Logo" style={{width: '60px', height: '60px', objectFit: 'contain'}} />
             </div>
           </div>
           {user && (
@@ -203,18 +264,33 @@ export default function MyRequests({ user, go }) {
                 </div>
 
                 <div className="chat-messages-area">
-                  <div className="chat-message-bubble sent">
-                    {selectedConversation.message}
-                  </div>
-                  <div className="chat-message-bubble received">
-                    Hi! I'm interested in this book.
-                  </div>
-                  <div className="chat-message-bubble sent">
-                    Sure! When do you need it?
-                  </div>
-                  <div className="chat-message-bubble received">
-                    Next week would be great!
-                  </div>
+                  {loadingMessages ? (
+                    <div style={{textAlign: 'center', padding: '2rem', color: '#6b7280'}}>Loading messages...</div>
+                  ) : (
+                    <>
+                      {/* Show initial request message if it exists */}
+                      {selectedConversation.message && (
+                        <div className="chat-message-bubble sent">
+                          {selectedConversation.message}
+                        </div>
+                      )}
+                      {/* Display all messages */}
+                      {messages.length === 0 ? (
+                        <div style={{textAlign: 'center', padding: '2rem', color: '#6b7280'}}>
+                          <p>No additional messages yet. Start the conversation!</p>
+                        </div>
+                      ) : (
+                        messages.map((msg) => {
+                          const isSent = user && msg.senderId === user.uid
+                          return (
+                            <div key={msg.id} className={`chat-message-bubble ${isSent ? 'sent' : 'received'}`}>
+                              {msg.text}
+                            </div>
+                          )
+                        })
+                      )}
+                    </>
+                  )}
                 </div>
 
                 <div className="chat-input-container">
@@ -226,10 +302,19 @@ export default function MyRequests({ user, go }) {
                     onChange={(e) => setChatMessage(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                   />
-                  <button className="chat-send-button" onClick={handleSendMessage}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                    </svg>
+                  <button 
+                    className="chat-send-button" 
+                    onClick={handleSendMessage}
+                    disabled={sendingMessage || !chatMessage.trim()}
+                    style={{opacity: sendingMessage || !chatMessage.trim() ? 0.5 : 1, cursor: sendingMessage || !chatMessage.trim() ? 'not-allowed' : 'pointer'}}
+                  >
+                    {sendingMessage ? (
+                      <span style={{fontSize: '0.8rem'}}>...</span>
+                    ) : (
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                      </svg>
+                    )}
                   </button>
                 </div>
               </>

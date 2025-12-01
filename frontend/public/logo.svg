@@ -1,0 +1,15 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8A3D8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C7A3E8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#grad)"/>
+  <!-- Book icon -->
+  <g transform="translate(50, 50)">
+    <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H6V4h12v16zM10 6h4v2h-4V6zm0 4h4v2h-4v-2z" fill="white" opacity="0.9"/>
+  </g>
+</svg>
+

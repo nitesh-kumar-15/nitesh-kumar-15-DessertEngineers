@@ -161,7 +161,7 @@ export default function MyListings({ user, go }) {
           <div className="home-header-title">
             <h1>Book Buddy</h1>
             <div className="book-buddy-logo">
-              <img src="/logo.png" alt="Book Buddy Logo" style={{width: '60px', height: '60px', objectFit: 'contain'}} />
+              <img src="/logo.svg" alt="Book Buddy Logo" style={{width: '60px', height: '60px', objectFit: 'contain'}} />
             </div>
           </div>
           <button className="header-logout-btn" onClick={handleLogout}>

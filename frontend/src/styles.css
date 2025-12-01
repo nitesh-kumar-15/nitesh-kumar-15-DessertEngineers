@@ -148,7 +148,7 @@ label { font-weight: 500; color: var(--text); }
 }
 
 .sidebar {
-  width: 200px;
+  width: 260px;
   background: white;
   padding: 1.5rem 0;
   display: flex;
@@ -169,32 +169,58 @@ label { font-weight: 500; color: var(--text); }
 .sidebar-menu-item {
   display: flex;
   align-items: center;
-  gap: 0.875rem;
-  padding: 0.5rem 1.25rem;
+  gap: 1rem;
+  padding: 0.875rem 1.5rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s ease;
   border: 3px solid transparent;
-  margin: 0 0.875rem;
-  border-radius: 0.5rem;
+  margin: 0.25rem 0.875rem;
+  border-radius: 0.75rem;
   font-size: 1rem;
   font-weight: 600;
   color: #2d3748;
   text-decoration: none;
+  position: relative;
 }
 
 .sidebar-menu-item:hover {
-  background: #f7fafc;
+  background: linear-gradient(90deg, rgba(232, 163, 216, 0.1) 0%, rgba(199, 163, 232, 0.1) 100%);
+  transform: translateX(4px);
+  border-color: rgba(232, 163, 216, 0.3);
 }
 
 .sidebar-menu-item.active {
-  border: 3px solid #4A90E2;
-  background: white;
+  background: linear-gradient(90deg, rgba(232, 163, 216, 0.15) 0%, rgba(199, 163, 232, 0.15) 100%);
+  border-color: #C7A3E8;
+  box-shadow: 0 2px 8px rgba(199, 163, 232, 0.2);
+}
+
+.sidebar-menu-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  background: linear-gradient(180deg, #E8A3D8 0%, #C7A3E8 100%);
+  border-radius: 0 4px 4px 0;
 }
 
 .sidebar-menu-item svg {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.sidebar-menu-item:hover svg {
+  transform: scale(1.1);
+  color: #C7A3E8;
+}
+
+.sidebar-menu-item.active svg {
+  color: #C7A3E8;
 }
 
 .sidebar-add-book {
@@ -202,55 +228,98 @@ label { font-weight: 500; color: var(--text); }
   background: linear-gradient(135deg, #E8A3D8 0%, #C7A3E8 100%);
   color: white;
   border: none;
-  padding: 0.875rem 1rem;
-  border-radius: 0.625rem;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
   cursor: pointer;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.625rem;
   box-shadow: 0 4px 12px rgba(232, 163, 216, 0.3);
-  transition: all 0.2s;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar-add-book::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.sidebar-add-book:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 .sidebar-add-book:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(232, 163, 216, 0.4);
+  box-shadow: 0 6px 20px rgba(232, 163, 216, 0.5);
+}
+
+.sidebar-add-book:active {
+  transform: translateY(0);
 }
 
 .sidebar-add-book svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.25s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.sidebar-add-book:hover svg {
+  transform: rotate(90deg) scale(1.1);
 }
 
   .sidebar-spacer {
-    height: 320px;
-    flex-shrink: 0;
+    flex: 1;
+    min-height: 2rem;
   }
 
   .sidebar-divider {
     height: 1px;
-    background: #e5e7eb;
-    margin: 0.5rem 1.5rem;
+    background: linear-gradient(90deg, transparent 0%, #e5e7eb 20%, #e5e7eb 80%, transparent 100%);
+    margin: 1rem 1.5rem;
   }
 
   .sidebar-search-label {
-    padding: 0.5rem 1.25rem;
-    margin: 1rem 0.875rem 0.25rem 0.875rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #2d3748;
+    padding: 0.75rem 1.5rem;
+    margin: 1.5rem 0.875rem 0.5rem 0.875rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
   
   .sidebar-search-container {
-    padding: 0.75rem 1rem;
-    margin: 0 1rem 0.5rem 1rem;
+    padding: 0.875rem;
+    margin: 0 0.875rem 1rem 0.875rem;
     background: #f9fafb;
-    border-radius: 0.5rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
     display: flex;
-    gap: 0.5rem;
+    gap: 0.625rem;
+    align-items: center;
+    transition: all 0.25s ease;
+  }
+
+  .sidebar-search-container:focus-within {
+    border-color: #C7A3E8;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(199, 163, 232, 0.1);
+    transform: translateY(-1px);
   }
 
 @keyframes slideDown {
@@ -266,35 +335,61 @@ label { font-weight: 500; color: var(--text); }
 
 .sidebar-search-input {
   flex: 1;
-  border: 1px solid #e5e7eb;
+  border: none;
+  background: transparent;
   border-radius: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.9rem;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.95rem;
   outline: none;
   transition: all 0.2s;
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.sidebar-search-input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
 }
 
 .sidebar-search-input:focus {
-  border-color: linear-gradient(135deg, #E8A3D8 0%, #C7A3E8 100%);
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  background: transparent;
 }
 
 .sidebar-search-btn {
   background: linear-gradient(135deg, #E8A3D8 0%, #C7A3E8 100%);
   color: white;
   border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem 0.75rem;
+  border-radius: 0.625rem;
+  padding: 0.625rem;
+  min-width: 40px;
+  height: 40px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(232, 163, 216, 0.3);
 }
 
 .sidebar-search-btn:hover {
-  background: #d54fcc;
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #D88BC7 0%, #B893E8 100%);
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(232, 163, 216, 0.4);
+}
+
+.sidebar-search-btn:active {
+  transform: scale(0.95);
+}
+
+.sidebar-search-btn svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-search-btn:hover svg {
+  transform: rotate(10deg) scale(1.1);
 }
 
 .main-content {
@@ -1406,6 +1501,46 @@ label { font-weight: 500; color: var(--text); }
   
   .bookdetail-right {
     padding: 2rem 1.5rem;
+  }
+
+  .sidebar {
+    width: 220px;
+  }
+
+  .sidebar-menu-item {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .sidebar-search-container {
+    padding: 0.75rem;
+  }
+
+  .sidebar-search-input {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .sidebar-menu-item {
+    padding: 0.625rem 1rem;
+    font-size: 0.9rem;
+    gap: 0.75rem;
+  }
+
+  .sidebar-menu-item svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .sidebar-add-book {
+    padding: 0.875rem 1rem;
+    font-size: 0.9rem;
   }
 }
 

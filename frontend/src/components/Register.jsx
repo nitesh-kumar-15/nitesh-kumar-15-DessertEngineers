@@ -29,7 +29,7 @@ export default function Register({ go }) {
 
           <div className="login-content">
             <div className="mascot-logo">
-              <img src="/logo.png" alt="Book Buddy Logo" style={{width: '150px', height: '150px', objectFit: 'contain'}} />
+              <img src="/logo.svg" alt="Book Buddy Logo" style={{width: '150px', height: '150px', objectFit: 'contain'}} />
             </div>
 
             <h2 className="login-subtitle">Register</h2>
