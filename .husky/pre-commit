@@ -1,0 +1,10 @@
+# Run Gitleaks on staged changes; fail the commit if it finds secrets
+./tools/gitleaks.exe protect --staged --redact
+status=$?
+
+if [ $status -ne 0 ]; then
+  echo "❌ Gitleaks found potential secrets. Commit aborted."
+  exit $status
+fi
+
+echo "✅ No secrets detected in staged changes."
