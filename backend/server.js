@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import booksRouter from './routes/books.js';
 import requestsRouter from './routes/requests.js';
+import profileRouter from './routes/profile.js';
 
 dotenv.config();
 const app = express();
@@ -19,6 +20,7 @@ app.get('/', (req, res) => res.json({ ok: true, service: 'Book Buddy API (Fireba
 app.use('/api/dev', seedRouter);
 app.use('/api/books', booksRouter);
 app.use('/api/requests', requestsRouter);
+app.use('/api/profile', profileRouter);
 
 app.use((err, req, res, next) => {
   console.error('API error:', err);
