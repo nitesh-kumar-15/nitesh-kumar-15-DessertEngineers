@@ -753,7 +753,7 @@ This repo blocks commits that include API keys/secrets by scanning **staged chan
 brew install gitleaks 
 
 **Windows**
-# Choose one package manager
+Choose one package manager:
 choco install gitleaks -y
 or
 scoop install gitleaks
