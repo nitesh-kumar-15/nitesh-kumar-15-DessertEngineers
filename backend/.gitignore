@@ -11,3 +11,6 @@ serviceAccount.json
 .env.*
 *.pem
 *.p12
+
+tools/
+*.zip
