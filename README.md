@@ -735,6 +735,29 @@ const unsubscribe = listenToMessages(requestId, (messages) => {
 - Monitor Firestore usage and costs
 - Set up Firebase error reporting
 
+## Pre-commit Secrets Catcher (Husky + Gitleaks)
+
+This repo blocks commits that include API keys/secrets by scanning **staged changes** at pre-commit.
+
+### How it works
+- Husky runs: node scripts/scan-secrets.mjs
+- The script tries to run **gitleaks**:
+  1) from your **PATH**, or  
+  2) from a local untracked fallback:
+     - macOS/Linux: ./tools/gitleak
+     - Windows: .\tools\gitleaks.exe
+
+### Quick setup
+
+**macOS**
+brew install gitleaks 
+
+**Windows**
+Choose one package manager:
+choco install gitleaks -y
+or
+scoop install gitleaks
+
 ### Testing Strategy
 
 - **Unit Tests**: Test pure functions in `logic.js`
