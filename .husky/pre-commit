@@ -1,0 +1,25 @@
+# Run Gitleaks on staged changes; fail the commit if it finds secrets
+# Cross-platform support: use .exe on Windows, regular binary on Unix-like systems
+
+# Detect platform and use appropriate binary
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; then
+  GITLEAKS_BIN="./tools/gitleaks.exe"
+else
+  GITLEAKS_BIN="./tools/gitleaks"
+fi
+
+if [ ! -f "$GITLEAKS_BIN" ]; then
+  echo "⚠️  Gitleaks binary not found at $GITLEAKS_BIN. Skipping secret scan."
+  exit 0
+fi
+
+$GITLEAKS_BIN protect --staged --redact
+status=$?
+
+if [ $status -ne 0 ]; then
+  echo "❌ Gitleaks found potential secrets. Commit aborted."
+  exit $status
+fi
+
+echo "✅ No secrets detected in staged changes."
+
